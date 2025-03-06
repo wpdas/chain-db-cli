@@ -1,6 +1,6 @@
 # ChainDB CLI
 
-A command-line interface (CLI) to interact with ChainDB, a database with change history tracking.
+A command-line interface (CLI) to interact with [ChainDB](https://github.com/wpdas/chain-db), a database with change history tracking.
 
 ![ChainDB CLI Screenshot](screenshot.gif)
 
