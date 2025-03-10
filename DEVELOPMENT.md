@@ -83,7 +83,7 @@ This will authenticate you and save the token for subsequent requests.
 chaindb table persist users --data '{"name": "John", "age": 30, "city": "New York"}'
 ```
 
-#### Get current data:
+#### Get current data (the last record stored in the table):
 
 ```bash
 chaindb table get users

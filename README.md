@@ -72,22 +72,65 @@ chaindb db change-password --name my_database --user admin --old-password oldpas
 chaindb table list
 ```
 
-#### Get current table data
+#### Get current table data (the last record stored in the table)
 
 ```bash
 chaindb table get users
 ```
 
-#### Update table data
+#### Get a specific record by document ID
 
 ```bash
-chaindb table update users --data '{"name": "John", "age": 30}'
+chaindb table get-by-id users --doc-id "550e8400-e29b-41d4-a716-446655440000"
+```
+
+#### Update a record by document ID
+
+```bash
+chaindb table update users --data '{"name": "John", "age": 30}' --doc-id "550e8400-e29b-41d4-a716-446655440000"
+```
+
+**Important**: When updating a record, the new data completely replaces the existing data. There is no merging of properties. If you want to preserve existing properties, you must include them in your update request.
+
+For example, if your record has:
+
+```json
+{
+  "name": "John",
+  "age": 30,
+  "city": "New York",
+  "doc_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+And you update it with:
+
+```json
+{
+  "age": 31
+}
+```
+
+The resulting record will be:
+
+```json
+{
+  "age": 31,
+  "doc_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+The `name` and `city` properties are lost because the update completely replaces the data. To preserve these properties, include them in your update:
+
+```bash
+chaindb table update users --data '{"name": "John", "age": 31, "city": "New York"}' --doc-id "550e8400-e29b-41d4-a716-446655440000"
 ```
 
 #### Persist new data to table
 
 ```bash
-chaindb table persist users --data '{"name": "Mary", "age": 25}'
+chaindb table persist users --data '{"name": "John", "age": 30, "city": "New York"}'
+chaindb table persist users --data '{"name": "Mary", "age": 25, "city": "Los Angeles"}'
 ```
 
 #### Get table history
@@ -141,8 +184,17 @@ chaindb table list
 chaindb table persist users --data '{"name": "John", "age": 30, "city": "New York"}'
 chaindb table persist users --data '{"name": "Mary", "age": 25, "city": "Los Angeles"}'
 
-# Get current data
+# Get current data (the last record stored in the table)
 chaindb table get users
+
+# Get a specific record by document ID
+# chaindb table get-by-id users --doc-id "550e8400-e29b-41d4-a716-446655440000"
+
+# Update a record by document ID
+# Note: This completely replaces the existing data, so include all properties you want to keep
+# First, get the record's doc_id using get or get-by-id commands
+# Then update the specific record:
+# chaindb table update users --data '{"name": "John Smith", "age": 31, "city": "New York"}' --doc-id "550e8400-e29b-41d4-a716-446655440000"
 
 # Get history
 chaindb table history users --limit 10

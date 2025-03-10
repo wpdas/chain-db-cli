@@ -40,6 +40,7 @@ import { connectDatabase } from "./commands/database/connect";
 import { changePassword } from "./commands/database/changePassword";
 import { updateTable } from "./commands/table/update";
 import { getTable } from "./commands/table/get";
+import { getTableById } from "./commands/table/getById";
 import { persistTable } from "./commands/table/persist";
 import { getTableHistory } from "./commands/table/history";
 import { findWhere } from "./commands/table/findWhere";
@@ -103,13 +104,20 @@ const tableCommand = program
 
 tableCommand
   .command("get <tableName>")
-  .description("Get current table data")
+  .description("Get current table data (the last record stored in the table)")
   .action(getTable);
 
 tableCommand
+  .command("get-by-id <tableName>")
+  .description("Get a specific record from table by document ID")
+  .requiredOption("--doc-id <docId>", "Document ID to fetch")
+  .action(getTableById);
+
+tableCommand
   .command("update <tableName>")
-  .description("Update table data")
+  .description("Update a specific record in table by document ID")
   .requiredOption("-d, --data <data>", "Data in JSON format")
+  .requiredOption("--doc-id <docId>", "Document ID of the record to update")
   .action(updateTable);
 
 tableCommand

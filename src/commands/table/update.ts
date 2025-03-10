@@ -4,6 +4,7 @@ import { apiRequest } from "../../utils/api";
 
 interface UpdateTableOptions {
   data: string;
+  docId: string;
 }
 
 interface ApiResponse {
@@ -16,7 +17,7 @@ export async function updateTable(
   tableName: string,
   options: UpdateTableOptions
 ): Promise<void> {
-  const spinner = ora(`Updating data in table '${tableName}'...`).start();
+  const spinner = ora(`Updating record in table '${tableName}'...`).start();
 
   try {
     // Convert JSON string to object
@@ -28,31 +29,35 @@ export async function updateTable(
       process.exit(1);
     }
 
+    // Prepare request payload with required doc_id
+    const payload = {
+      data: dataObj,
+      doc_id: options.docId,
+    };
+
     const response = await apiRequest<ApiResponse>(
       "POST",
       `table/${tableName}/update`,
-      { data: dataObj }
+      payload
     );
 
     if (response.success) {
       spinner.succeed(
-        chalk.green(`Data in table '${tableName}' updated successfully!`)
+        chalk.green(`Record in table '${tableName}' updated successfully!`)
       );
 
       // Display updated data
       if (response.data) {
-        console.log(chalk.cyan("\nUpdated data:"));
+        console.log(chalk.cyan("\nUpdated record:"));
         console.log(JSON.stringify(response.data, null, 2));
       }
       process.exit(0);
     } else {
-      spinner.fail(
-        chalk.red(`Failed to update table data: ${response.message}`)
-      );
+      spinner.fail(chalk.red(`Failed to update record: ${response.message}`));
       process.exit(1);
     }
   } catch (error: any) {
-    spinner.fail(chalk.red(`Error updating table data: ${error.message}`));
+    spinner.fail(chalk.red(`Error updating record: ${error.message}`));
     process.exit(1);
   }
 }
