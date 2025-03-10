@@ -1,7 +1,7 @@
 {
   "name": "chain-db-cli",
   "version": "1.0.0",
-  "description": "CLI para interagir com o ChainDB",
+  "description": "CLI to interact with ChainDB",
   "main": "dist/index.js",
   "bin": {
     "chaindb": "./dist/index.js"
@@ -9,6 +9,11 @@
   "engines": {
     "node": ">=20.18.3"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc && chmod +x dist/index.js",
     "start": "node --no-deprecation dist/index.js",
@@ -19,9 +24,15 @@
   "keywords": [
     "chaindb",
     "cli",
-    "database"
+    "database",
+    "table",
+    "history",
+    "document",
+    "document-database",
+    "doc"
   ],
-  "author": "",
+  "author": "Wenderson Pires <wendersonpires@gmail.com>",
+  "repository": "https://github.com/wpdas/chain-db-cli",
   "license": "MIT",
   "dependencies": {
     "chalk": "^3.0.0",
